@@ -2,12 +2,17 @@ import {integer, pgEnum, pgTable, serial, text, timestamp, varchar} from 'drizzl
 
 export const userSystemEnum = pgEnum('user_system_enum', ['system', 'user'])
 
+export const subjects = pgTable('subjects', {
+    id: serial('id').primaryKey(),
+    name: text('name').notNull(),
+})
+
 export const chats = pgTable('chats', {
     id: serial('id').primaryKey(),
-    subject: text('subject').notNull(),
     pdfName: text('pdf_name').notNull(),
     pdfUrl: text('pdf_url').notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
+    subjectId: integer('subject_id').references(()=>subjects.id).notNull(),
     userID: varchar('user_id', {length:256}).notNull(),
     fileKey: text('file_key').notNull(),
 })
@@ -19,5 +24,3 @@ export const messages = pgTable("messages", {
     createdAt: timestamp('created_at').notNull().defaultNow(),
     role: userSystemEnum('role').notNull()
 })
-
-// new table for subject or keep as a separate field?
