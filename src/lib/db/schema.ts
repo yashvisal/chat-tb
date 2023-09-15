@@ -24,3 +24,6 @@ export const messages = pgTable("messages", {
     createdAt: timestamp('created_at').notNull().defaultNow(),
     role: userSystemEnum('role').notNull()
 })
+
+// npx drizzle-kit push:pg to push changes to db
+// npx drizzle-kit studio --host 127.0.0.1 to visualize db in browser
