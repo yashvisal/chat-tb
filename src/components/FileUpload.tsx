@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { uploadToS3 } from '@/lib/s3'
 import { useMutation } from '@tanstack/react-query'
 import { Inbox, Loader2 } from 'lucide-react'
@@ -26,18 +26,20 @@ const FileUpload = () => {
         onDrop: async (acceptedFiles) => {
             console.log(acceptedFiles);
             const file = acceptedFiles[0]
+            /*
             if (file.size > 10*1024*1024){
                 // bigger than 10 mb
                 toast.error("File too large");
                 return
             }
+            */
 
             try {
                 setUploading(true)
                 const data = await uploadToS3(file);
                 if (!data?.file_key || !data.file_name) {
                     toast.error("Something went wrong");
-                    return
+                    return;
                 }
                 mutate(data, {
                     onSuccess: (data) => {

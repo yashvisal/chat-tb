@@ -10,12 +10,12 @@ export async function uploadToS3(file: File){
 
         const s3 = new AWS.S3({
             params: {
-                Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME
+                Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
             },
-            region: 'us-east-1'
+            region: "us-east-1",
         })
 
-        const file_key = 'uploads/' + Date.now().toString() + file.name.replace(' ','-')
+        const file_key = 'uploads/' + Date.now().toString() + file.name.replace(' ','-');
 
         const params = {
             Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
@@ -23,8 +23,8 @@ export async function uploadToS3(file: File){
             Body: file
         };
 
-        const upload = s3.putObject(params)
-        .on('httpUploadProgress', evt => {
+        const upload = s3.upload(params)
+        .on('httpUploadProgress', (evt) => {
             console.log(
                 'uploading to s3...', 
                 parseInt(((evt.loaded*100)/evt.total).toString())
@@ -32,7 +32,8 @@ export async function uploadToS3(file: File){
         })
         .promise();
 
-        await upload.then((data) => {
+        // might need data as a variable, got this way after changing putObject to upload
+        await upload.then(() => {
             console.log('successfully uploaded to S3!', file_key)
         });
 
